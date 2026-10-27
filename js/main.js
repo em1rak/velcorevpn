@@ -609,7 +609,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (mobileFrame) mobileFrame.style.zoom = '1';
     } else {
       if (mobileFrame) {
-        const scale = windowWidth < 440 ? (windowWidth / 440) : 1;
+        const scale = windowWidth < 400 ? (windowWidth / 400) : 1;
         mobileFrame.style.zoom = scale;
       }
       if (desktopFrame) desktopFrame.style.zoom = '1';

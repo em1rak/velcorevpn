@@ -505,9 +505,9 @@ html {
 /* 6. Мобильная кнопка бургера (5_538) - выравнивание текста и иконки стрелки */
 [id="5_539"] {
   position: absolute !important;
-  left: 50% !important;
+  left: 23px !important;
   top: 50% !important;
-  transform: translate(-60%, -50%) !important;
+  transform: translateY(-50%) !important;
   z-index: 5 !important;
 }
 
@@ -520,7 +520,7 @@ html {
   position: absolute !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
-  right: 24px !important;
+  right: 23px !important;
   left: auto !important;
   z-index: 5 !important;
 }
@@ -9103,7 +9103,7 @@ html {
 
   .Pixso-frame-5_826 {
     width: 285px;
-    height: 174px;
+    height: 184px;
     position: absolute;
     left: 0px;
     top: 502px;
@@ -12211,12 +12211,23 @@ html {
 
   .Pixso-frame-4_221 {
     min-width: unset !important;
-    width: 440px !important;
+    width: 400px !important;
     margin: 0 auto !important;
     overflow: visible !important;
     background-color: rgba(240, 240, 240, 1) !important;
     transform-origin: top center;
   }
+
+  /* Centering mobile sections to 400px design width (shifted by -20px) */
+  .Pixso-group-5_854 { left: 0px !important; }
+  .Pixso-group-5_855 { left: 9px !important; }
+  .Pixso-group-5_856 { left: 24px !important; }
+  .Pixso-group-5_857 { left: 57px !important; }
+  .Pixso-group-5_858 { left: 58px !important; }
+  .Pixso-group-5_859 { left: 57px !important; }
+  .Pixso-group-5_860 { left: 58px !important; }
+  .Pixso-group-5_861 { left: 51px !important; }
+  .Pixso-group-5_862 { left: 24px !important; }
 
   /* ========================================================================= */
   /* MOBILE NAVBAR: LIQUID GLASS, CORRECT ICONS & EXPANDABLE MENU              */
@@ -12559,17 +12570,24 @@ html {
     background-color: rgba(0, 0, 0, 0.04);
   }
 
+  .frame-content-5_751,
+  .frame-content-5_748 {
+    padding: 20px 24px !important;
+    box-sizing: border-box !important;
+  }
+
   .custom-input {
     border: none !important;
     outline: none !important;
     background: transparent !important;
     width: 100% !important;
     font-family: "Decima Mono X-Regular", monospace, sans-serif !important;
-    font-size: 18px !important;
+    font-size: 15px !important;
     color: #111111 !important;
     text-transform: uppercase !important;
-    letter-spacing: -0.03em !important;
+    letter-spacing: -0.04em !important;
     padding: 6px 0 !important;
+    box-sizing: border-box !important;
   }
 
   .custom-input::placeholder {

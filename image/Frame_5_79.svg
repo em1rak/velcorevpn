@@ -1,0 +1,77 @@
+<svg viewBox="0 0 162.665 144.035" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="162.664551" height="144.034668" fill="none">
+	<defs>
+		<g id="pixso_custom_effect_0">
+			<effect x="0.000000" y="16.806854" visibility="visible" fill="rgb(17,17,17)" fill-opacity="0.449999988" effectType="dropShadow" stdDeviation="25.8566971" radius="-21.4481316" />
+			<effect x="2.002282" y="2.002282" visibility="visible" fill="rgb(255,255,255)" fill-opacity="0.699999988" effectType="innerShadow" stdDeviation="13.2150602" radius="-2.00228167" />
+			<effect x="1.001141" y="1.001141" visibility="visible" fill="rgb(255,255,255)" fill-opacity="1" effectType="innerShadow" stdDeviation="24.0273819" radius="-2.00228167" />
+			<effect x="1.001141" y="1.001141" visibility="visible" fill="rgb(255,255,255)" fill-opacity="1" effectType="innerShadow" stdDeviation="24.0273819" radius="-2.00228167" />
+			<effect x="-6.407302" y="-7.408442" visibility="visible" fill="rgb(255,255,255)" fill-opacity="0.200000003" effectType="innerShadow" stdDeviation="12.0136909" radius="-2.00228167" />
+		</g>
+		<filter id="filter_0" width="166.669113" height="148.039230" x="-2.002282" y="-2.002282" filterUnits="userSpaceOnUse" customEffect="url(#pixso_custom_effect_0)" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix" />
+			<feColorMatrix result="hardAlpha" in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0 " />
+			<feOffset dx="-0.000000" dy="10.607666" in="hardAlpha" />
+			<feMorphology radius="21.4481316" operator="erode" />
+			<feOffset dx="0.000000" dy="6.199188" />
+			<feGaussianBlur stdDeviation="8.61889935" />
+			<feComposite k2="-1" k3="1" in2="hardAlpha" operator="out" />
+			<feColorMatrix type="matrix" values="0 0 0 0 0.0649038 0 0 0 0 0.0649038 0 0 0 0 0.0649038 0 0 0 0.45 0 " />
+			<feBlend result="effect_dropShadow_1" in2="BackgroundImageFix" mode="normal" />
+			<feBlend result="shape" in="SourceGraphic" in2="effect_dropShadow_1" mode="normal" />
+			<feColorMatrix result="hardAlpha" in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0 " />
+			<feOffset dx="-0.000000" dy="10.607666" in="hardAlpha" />
+			<feMorphology radius="2.00228167" operator="dilate" />
+			<feOffset dx="2.002282" dy="-8.605385" />
+			<feGaussianBlur stdDeviation="4.40502024" />
+			<feComposite k2="-1" k3="1" in2="hardAlpha" operator="arithmetic" />
+			<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.7 0 " />
+			<feBlend result="effect_innerShadow_2" in2="shape" mode="normal" />
+			<feColorMatrix result="hardAlpha" in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0 " />
+			<feOffset dx="-0.000000" dy="10.607666" in="hardAlpha" />
+			<feMorphology radius="2.00228167" operator="dilate" />
+			<feOffset dx="1.001141" dy="-9.606525" />
+			<feGaussianBlur stdDeviation="8.00912762" />
+			<feComposite k2="-1" k3="1" in2="hardAlpha" operator="arithmetic" />
+			<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0 " />
+			<feBlend result="effect_innerShadow_3" in2="effect_innerShadow_2" mode="normal" />
+			<feColorMatrix result="hardAlpha" in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0 " />
+			<feOffset dx="-0.000000" dy="10.607666" in="hardAlpha" />
+			<feMorphology radius="2.00228167" operator="dilate" />
+			<feOffset dx="1.001141" dy="-9.606525" />
+			<feGaussianBlur stdDeviation="8.00912762" />
+			<feComposite k2="-1" k3="1" in2="hardAlpha" operator="arithmetic" />
+			<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0 " />
+			<feBlend result="effect_innerShadow_4" in2="effect_innerShadow_3" mode="normal" />
+			<feColorMatrix result="hardAlpha" in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0 " />
+			<feOffset dx="-0.000000" dy="10.607666" in="hardAlpha" />
+			<feMorphology radius="2.00228167" operator="dilate" />
+			<feOffset dx="-6.407302" dy="-18.016109" />
+			<feGaussianBlur stdDeviation="4.00456381" />
+			<feComposite k2="-1" k3="1" in2="hardAlpha" operator="arithmetic" />
+			<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.2 0 " />
+			<feBlend result="effect_innerShadow_5" in2="effect_innerShadow_4" mode="normal" />
+		</filter>
+		<radialGradient id="paint_radial_12" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(127.362,0,0,101.676,81.3323,21.1436)">
+			<stop stop-color="rgb(169,169,169)" offset="0" stop-opacity="1" />
+			<stop stop-color="rgb(115,115,115)" offset="0.400000006" stop-opacity="1" />
+			<stop stop-color="rgb(0,0,0)" offset="0.837806463" stop-opacity="1" />
+		</radialGradient>
+		<linearGradient id="paint_linear_0" x1="8.83168793" x2="180.288269" y1="122.819328" y2="39.3982391" gradientUnits="userSpaceOnUse">
+			<stop stop-color="rgb(255,255,255)" offset="0" stop-opacity="0" />
+			<stop stop-color="rgb(255,255,255)" offset="0.246634379" stop-opacity="0.699999988" />
+			<stop stop-color="rgb(255,255,255)" offset="0.927744687" stop-opacity="0.300000012" />
+			<stop stop-color="rgb(255,255,255)" offset="1" stop-opacity="0.200000003" />
+		</linearGradient>
+		<clipPath id="clipPath_0">
+			<rect width="153.847412" height="122.819313" x="4.408569" y="0.000000" rx="45.249222" fill="rgb(255,255,255)" />
+		</clipPath>
+	</defs>
+	<g filter="url(#filter_0)">
+		<g id="кнопка со стрелкой" clip-path="url(#clipPath_0)" customFrame="url(#clipPath_0)">
+			<rect id="кнопка со стрелкой" width="153.847412" height="122.819313" x="4.408569" y="0.000000" rx="45.249222" fill="rgb(0,0,0)" />
+			<rect id="кнопка со стрелкой" width="153.847412" height="122.819313" x="4.408569" y="0.000000" rx="45.249222" fill="url(#paint_radial_12)" />
+			<path id="стрелка" d="M93.2452 53.3745L109.128 53.3745L81.3322 93.0835L53.5363 53.3745L69.42 53.3745L69.42 37.4927L93.2452 37.4927L93.2452 53.3745Z" fill="rgb(255,255,255)" fill-rule="nonzero" />
+		</g>
+		<rect id="кнопка со стрелкой" width="151.908157" height="120.880058" x="5.378196" y="0.969626" rx="44.279594" stroke="url(#paint_linear_0)" stroke-opacity="0.800000012" stroke-width="1.939252" />
+	</g>
+</svg>

@@ -119,29 +119,31 @@ body {
   justify-content: center !important;
 }
 
-/* Custom Styled Black Scrollbar for the page */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: #000000 rgba(240, 240, 240, 0.8);
-}
+/* Custom Styled Black Scrollbar for desktop only */
+@media (min-width: 769px) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #000000 rgba(240, 240, 240, 0.8);
+  }
 
-::-webkit-scrollbar {
-  width: 20px;
-  height: 10px;
-}
+  ::-webkit-scrollbar {
+    width: 20px;
+    height: 10px;
+  }
 
-::-webkit-scrollbar-track {
-  background: rgba(240, 240, 240, 0.9);
-}
+  ::-webkit-scrollbar-track {
+    background: rgba(240, 240, 240, 0.9);
+  }
 
-::-webkit-scrollbar-thumb {
-  background: #111111;
-  border-radius: 8px;
-  border: 2px solid rgba(240, 240, 240, 0.9);
-}
+  ::-webkit-scrollbar-thumb {
+    background: #111111;
+    border-radius: 8px;
+    border: 2px solid rgba(240, 240, 240, 0.9);
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #000000;
+  ::-webkit-scrollbar-thumb:hover {
+    background: #000000;
+  }
 }
 
 /* Eliminate ANY secondary inner scrollbars on sub-containers */
@@ -12200,14 +12202,25 @@ html {
 /* MOBILE MEDIA QUERY (max-width: 768px)                                     */
 @media (max-width: 768px) {
   html {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
     width: 100% !important;
   }
 
+  ::-webkit-scrollbar,
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+  }
+
   body {
-    overflow-x: hidden !important;
-    overflow-y: visible !important;
+    overflow: visible !important;
     width: 100% !important;
   }
 

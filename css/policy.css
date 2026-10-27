@@ -51,7 +51,9 @@
   src: url(../font/SFPro-CompressedBold.ttf) format('truetype');
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -81,12 +83,15 @@ body {
     scrollbar-width: thin;
     scrollbar-color: #000000 rgba(240, 240, 240, 0.8);
   }
+
   ::-webkit-scrollbar {
     width: 14px;
   }
+
   ::-webkit-scrollbar-track {
     background: rgba(240, 240, 240, 0.9);
   }
+
   ::-webkit-scrollbar-thumb {
     background: #111111;
     border-radius: 8px;
@@ -98,6 +103,7 @@ body {
   html {
     scrollbar-width: none !important;
   }
+
   ::-webkit-scrollbar {
     display: none !important;
     width: 0 !important;
@@ -329,7 +335,6 @@ body {
   margin: 20px 0;
   padding: 20px 24px;
   background: rgba(240, 240, 240, 0.7);
-  border-left: 4px solid #111111;
   border-radius: 12px;
 }
 

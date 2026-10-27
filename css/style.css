@@ -12661,4 +12661,34 @@ body {
   .velcore-toast {
     display: none !important;
   }
+
+  .footer-policy-link {
+    cursor: pointer !important;
+    text-decoration: none !important;
+    transition: opacity 0.2s ease, color 0.2s ease !important;
+  }
+
+  .footer-policy-link:hover {
+    color: rgba(0, 0, 0, 0.85) !important;
+    opacity: 1 !important;
+  }
+
+  .footer-policy-link:active {
+    transform: scale(0.97);
+  }
+}
+
+.footer-policy-link {
+  cursor: pointer !important;
+  text-decoration: none !important;
+  transition: opacity 0.2s ease, color 0.2s ease !important;
+}
+
+.footer-policy-link:hover {
+  color: rgba(0, 0, 0, 0.85) !important;
+  opacity: 1 !important;
+}
+
+.footer-policy-link:active {
+  transform: scale(0.97);
 }

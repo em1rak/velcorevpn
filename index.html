@@ -4,10 +4,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function () {
+      function adjustViewport() {
+        var w = window.screen.width;
+        var meta = document.querySelector('meta[name="viewport"]');
+        if (meta) {
+          if (w < 768) {
+            meta.setAttribute('content', 'width=440, user-scalable=no');
+          } else {
+            meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+          }
+        }
+      }
+      adjustViewport();
+      window.addEventListener('orientationchange', adjustViewport);
+    })();
+  </script>
   <title>Velcore VPN — Франшиза готового VPN-бизнеса</title>
   <meta name="description"
     content="Запустите свой VPN-бренд за 14 дней от 69 900 руб. Готовая технология, бот, mini-app и поддержка.">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=3">
   <script src="js/animation.js"></script>
 </head>
 
@@ -2062,7 +2079,7 @@
     </div>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=3"></script>
 </body>
 
 </html>

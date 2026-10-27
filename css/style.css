@@ -12200,34 +12200,41 @@ html {
 /* MOBILE MEDIA QUERY (max-width: 768px)                                     */
 /* ========================================================================= */
 @media (max-width: 768px) {
+  html,
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+
   #desktop-view {
     display: none !important;
   }
 
   #mobile-view {
     display: block !important;
-    width: 100%;
+    width: 100% !important;
+    overflow-x: hidden !important;
   }
 
   .Pixso-frame-4_221 {
-    min-width: unset !important;
-    width: 400px !important;
+    min-width: 440px !important;
+    width: 440px !important;
+    max-width: 440px !important;
     margin: 0 auto !important;
     overflow: visible !important;
     background-color: rgba(240, 240, 240, 1) !important;
-    transform-origin: top center;
+    transform-origin: top center !important;
+    flex-shrink: 0 !important;
   }
 
-  /* Centering mobile sections to 400px design width (shifted by -20px) */
-  .Pixso-group-5_854 { left: 0px !important; }
-  .Pixso-group-5_855 { left: 9px !important; }
-  .Pixso-group-5_856 { left: 24px !important; }
-  .Pixso-group-5_857 { left: 57px !important; }
-  .Pixso-group-5_858 { left: 58px !important; }
-  .Pixso-group-5_859 { left: 57px !important; }
-  .Pixso-group-5_860 { left: 58px !important; }
-  .Pixso-group-5_861 { left: 51px !important; }
-  .Pixso-group-5_862 { left: 24px !important; }
+  #mobile-view .Pixso-canvas-0_1,
+  #0_1_mob {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
 
   /* ========================================================================= */
   /* MOBILE NAVBAR: LIQUID GLASS, CORRECT ICONS & EXPANDABLE MENU              */

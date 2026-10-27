@@ -600,19 +600,32 @@ document.addEventListener('DOMContentLoaded', function () {
     const windowWidth = document.documentElement.clientWidth || window.innerWidth;
     const desktopFrame = document.getElementById('5_802');
     const mobileFrame = document.getElementById('4_221');
+    const mobileCanvas = document.getElementById('0_1_mob');
 
     if (windowWidth > 768) {
       if (desktopFrame) {
         const scale = windowWidth < 1920 ? (windowWidth / 1920) : 1;
         desktopFrame.style.zoom = scale;
       }
-      if (mobileFrame) mobileFrame.style.zoom = '1';
-    } else {
       if (mobileFrame) {
-        const scale = windowWidth < 400 ? (windowWidth / 400) : 1;
-        mobileFrame.style.zoom = scale;
+        mobileFrame.style.transform = 'none';
+        mobileFrame.style.zoom = '1';
       }
+      if (mobileCanvas) {
+        mobileCanvas.style.height = '';
+      }
+    } else {
       if (desktopFrame) desktopFrame.style.zoom = '1';
+      if (mobileFrame) {
+        // Base mobile artboard in Pixso is 440px wide
+        const scale = windowWidth / 440;
+        mobileFrame.style.transform = `scale(${scale})`;
+        mobileFrame.style.transformOrigin = 'top center';
+        if (mobileCanvas) {
+          const baseHeight = parseFloat(window.getComputedStyle(mobileFrame).height) || 9260;
+          mobileCanvas.style.height = `${Math.ceil(baseHeight * scale)}px`;
+        }
+      }
     }
   }
 

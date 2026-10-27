@@ -171,25 +171,27 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         localStorage.setItem('velcore_leads', JSON.stringify(leads));
 
-        // Replace input fields with confirmation text
+        // Replace input fields with confirmation text & hide submit button
+        const successBox = document.createElement('div');
+        successBox.className = 'lead-form-success-box';
+        successBox.innerHTML = `
+          <div class="lead-form-success-icon">✓</div>
+          <p class="lead-form-success-title">Заявка успешно отправлена!</p>
+          <p class="lead-form-success-desc">Мы свяжемся с вами в течение дня и пришлем все материалы.</p>
+        `;
+
         if (inputsWrapper) {
-          const successBox = document.createElement('div');
-          successBox.className = 'lead-form-success-box';
-          successBox.innerHTML = `
-            <p class="lead-form-success-title">Заявка успешно отправлена!</p>
-            <p class="lead-form-success-desc">Мы свяжемся с вами в течение дня и пришлем все материалы.</p>
-          `;
           inputsWrapper.replaceWith(successBox);
         } else if (fioContainer && contactContainer) {
           fioContainer.style.display = 'none';
           contactContainer.style.display = 'none';
-          const successBox = document.createElement('div');
-          successBox.className = 'lead-form-success-box';
-          successBox.innerHTML = `
-            <p class="lead-form-success-title">Заявка успешно отправлена!</p>
-            <p class="lead-form-success-desc">Мы свяжемся с вами в течение дня и пришлем все материалы.</p>
-          `;
-          submitBtn.parentNode.insertBefore(successBox, submitBtn);
+          if (submitBtn && submitBtn.parentNode) {
+            submitBtn.parentNode.insertBefore(successBox, submitBtn);
+          }
+        }
+
+        if (submitBtn) {
+          submitBtn.style.display = 'none';
         }
       });
     }

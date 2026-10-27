@@ -12198,11 +12198,16 @@ html {
 
 /* ========================================================================= */
 /* MOBILE MEDIA QUERY (max-width: 768px)                                     */
-/* ========================================================================= */
 @media (max-width: 768px) {
-  html,
+  html {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    width: 100% !important;
+  }
+
   body {
     overflow-x: hidden !important;
+    overflow-y: visible !important;
     width: 100% !important;
   }
 
@@ -12213,7 +12218,7 @@ html {
   #mobile-view {
     display: block !important;
     width: 100% !important;
-    overflow-x: hidden !important;
+    overflow: visible !important;
   }
 
   .Pixso-frame-4_221 {
@@ -12232,7 +12237,7 @@ html {
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     position: relative !important;
   }
 

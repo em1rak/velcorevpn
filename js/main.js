@@ -587,6 +587,61 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
+    // ==========================================
+    // Tariff Buttons -> Anchor to Lead Form
+    // ==========================================
+    // Desktop Tariff Buttons -> Desktop Lead Form (5_798 / 5_845)
+    const dTariffIds = ['4_144', '4_145', '4_177', '4_178', '4_208', '4_209'];
+    const dTariffButtons = new Set();
+    dTariffIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) dTariffButtons.add(el);
+    });
+    document.querySelectorAll('#desktop-view .btn-tariff, #desktop-view .stroke-wrapper-4_144, #desktop-view .stroke-wrapper-4_177, #desktop-view .stroke-wrapper-4_208').forEach(el => {
+      dTariffButtons.add(el);
+    });
+
+    dTariffButtons.forEach(btn => {
+      btn.style.cursor = 'pointer';
+      btn.classList.add('clickable-btn');
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const target = document.getElementById('5_798') || document.getElementById('5_845') || document.getElementById('5_794');
+        if (target) {
+          smoothScrollTo(target);
+          const input = document.getElementById('input_fio_d') || document.getElementById('input_contact_d');
+          if (input) setTimeout(() => input.focus(), 600);
+        }
+      });
+    });
+
+    // Mobile Tariff Buttons -> Mobile Lead Form (5_755 / 5_861)
+    const mTariffIds = ['4_253', '4_254', '4_289', '4_290', '4_325', '4_326'];
+    const mTariffButtons = new Set();
+    mTariffIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) mTariffButtons.add(el);
+    });
+    document.querySelectorAll('#mobile-view .btn-tariff, #mobile-view .stroke-wrapper-4_253, #mobile-view .stroke-wrapper-4_289, #mobile-view .stroke-wrapper-4_325').forEach(el => {
+      mTariffButtons.add(el);
+    });
+
+    mTariffButtons.forEach(btn => {
+      btn.style.cursor = 'pointer';
+      btn.classList.add('clickable-btn');
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const target = document.getElementById('5_755') || document.getElementById('5_861');
+        if (target) {
+          smoothScrollTo(target);
+          const input = document.getElementById('input_fio_m') || document.getElementById('input_contact_m');
+          if (input) setTimeout(() => input.focus(), 600);
+        }
+      });
+    });
+
     document.querySelectorAll('.Pixso-paragraph-5_741, .Pixso-paragraph-5_743, .Pixso-paragraph-5_744').forEach(btn => {
       btn.classList.add('clickable-btn');
       btn.addEventListener('click', () => smoothScrollTo(document.getElementById('5_755')));

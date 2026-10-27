@@ -175,7 +175,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const successBox = document.createElement('div');
         successBox.className = 'lead-form-success-box';
         successBox.innerHTML = `
-          <div class="lead-form-success-icon">✓</div>
           <p class="lead-form-success-title">Заявка успешно отправлена!</p>
           <p class="lead-form-success-desc">Мы свяжемся с вами в течение дня и пришлем все материалы.</p>
         `;
@@ -188,10 +187,6 @@ document.addEventListener('DOMContentLoaded', function () {
           if (submitBtn && submitBtn.parentNode) {
             submitBtn.parentNode.insertBefore(successBox, submitBtn);
           }
-        }
-
-        if (submitBtn) {
-          submitBtn.style.display = 'none';
         }
       });
     }

@@ -2,73 +2,83 @@
   font-family: 'Decima Mono X-Regular';
   font-style: normal;
   font-weight: 400;
-  src: url(../font/DecimaMonoX.ttf) format(truetype);
+  src: url(../font/DecimaMonoX.woff2) format('woff2'),
+       url(../font/DecimaMonoX.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Decima Mono X-Regular';
   font-style: normal;
   font-weight: 400;
-  src: url(../font/SFPro-Regular.ttf) format(truetype),
-    url(../font/SF-Pro.ttf) format(truetype);
+  src: url(../font/SFPro-Regular.woff2) format('woff2'),
+       url(../font/SFPro-Regular.ttf) format('truetype');
   unicode-range: U+20BD;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Decima Mono X-Bold';
   font-style: normal;
   font-weight: 700;
-  src: url(../font/DecimaMonoX-Bold.ttf) format(truetype);
+  src: url(../font/DecimaMonoX-Bold.woff2) format('woff2'),
+       url(../font/DecimaMonoX-Bold.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Decima Mono X-Bold';
   font-style: normal;
   font-weight: 700;
-  src: url(../font/SFPro-CondensedBold.ttf) format(truetype),
-    url(../font/SFPro-CompressedBold.ttf) format(truetype),
-    url(../font/SF-Pro.ttf) format(truetype);
+  src: url(../font/SFPro-CondensedBold.woff2) format('woff2'),
+       url(../font/SFPro-CondensedBold.ttf) format('truetype');
   unicode-range: U+20BD;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Regular';
   font-style: normal;
   font-weight: 400;
-  src: url(../font/SFPro-Regular.ttf) format(truetype),
-    url(../font/SF-Pro.ttf) format(truetype);
+  src: url(../font/SFPro-Regular.woff2) format('woff2'),
+       url(../font/SFPro-Regular.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Condensed Semibold';
   font-style: normal;
   font-weight: 400 700;
-  src: url(../font/SFPro-CondensedSemibold.ttf) format(truetype),
-    url(../font/SF-Pro.ttf) format(truetype);
+  src: url(../font/SFPro-CondensedSemibold.woff2) format('woff2'),
+       url(../font/SFPro-CondensedSemibold.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Condensed Medium';
   font-style: normal;
   font-weight: 400 700;
-  src: url(../font/SFPro-CondensedMedium.ttf) format(truetype),
-    url(../font/SF-Pro.ttf) format(truetype);
+  src: url(../font/SFPro-CondensedMedium.woff2) format('woff2'),
+       url(../font/SFPro-CondensedMedium.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Condensed Bold';
   font-style: normal;
   font-weight: 700;
-  src: url(../font/SFPro-CondensedBold.ttf) format(truetype),
-    url(../font/SF-Pro.ttf) format(truetype);
+  src: url(../font/SFPro-CondensedBold.woff2) format('woff2'),
+       url(../font/SFPro-CondensedBold.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Compressed Bold';
   font-style: normal;
   font-weight: 700;
-  src: url(../font/SFPro-CompressedBold.ttf) format(truetype),
-    url(../font/SF-Pro.ttf) format(truetype);
+  src: url(../font/SFPro-CompressedBold.woff2) format('woff2'),
+       url(../font/SFPro-CompressedBold.ttf) format('truetype');
+  font-display: swap;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1269,7 +1279,7 @@ body {
   }
 
   .Pixso-rectangle-5_68 {
-    background-image: url(../image/461bb40562fd7442d5626c42a824de0b09a78587.png);
+    background-image: url(../image/461bb40562fd7442d5626c42a824de0b09a78587.webp);
     background-size: 321.7162% 134.1281%;
     background-repeat: no-repeat;
     background-position: -827.00px -229.00px;
@@ -1278,7 +1288,7 @@ body {
   .Pixso-vector-5_71 {
     width: 575.68359375px;
     height: 1242.7734375px;
-    background-image: url(../image/burger-vpn-mockup.gif);
+    background-image: url(../image/burger-vpn-mockup.webp);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     position: absolute;
@@ -3515,7 +3525,7 @@ body {
     right: -332.377868578125px;
     top: 0px;
     transform: rotate(7.688688deg);
-    background-image: url(../image/77f26cb588ae83a88de1910eb11abe7a7c145d5a.png);
+    background-image: url(../image/77f26cb588ae83a88de1910eb11abe7a7c145d5a.webp);
     background-size: cover;
     background-position: center;
   }
@@ -6312,18 +6322,18 @@ body {
 
   .faq-desktop-item .faq-answer-drawer {
     width: 100% !important;
-    max-height: 0 !important;
+    max-height: 0;
     opacity: 0 !important;
     overflow: hidden !important;
     margin-top: 0 !important;
     pointer-events: none !important;
-    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin-top 0.35s ease !important;
+    transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin-top 0.25s ease !important;
+    will-change: max-height, opacity !important;
   }
 
   .faq-desktop-item.active .faq-answer-drawer {
-    max-height: 450px !important;
     opacity: 1 !important;
-    margin-top: 28px !important;
+    margin-top: 24px !important;
     pointer-events: auto !important;
   }
 
@@ -6538,7 +6548,7 @@ body {
     width: 400px;
     left: 0.00016px;
     top: 0px;
-    background-image: url(../image/461bb40562fd7442d5626c42a824de0b09a78587.png);
+    background-image: url(../image/461bb40562fd7442d5626c42a824de0b09a78587.webp);
     background-size: 328.0001% 127.1318%;
     background-repeat: no-repeat;
     background-position: -456.00px -105.00px;
@@ -6553,7 +6563,7 @@ body {
   .Pixso-vector-5_413 {
     width: 314.70703125px;
     height: 679.3828125px;
-    background-image: url(../image/burger-vpn-mockup.gif);
+    background-image: url(../image/burger-vpn-mockup-mobile.webp);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     position: absolute;
@@ -9101,7 +9111,7 @@ body {
     right: 17.848770031249984px;
     top: 20px;
     transform: rotate(11.239392deg);
-    background-image: url(../image/77f26cb588ae83a88de1910eb11abe7a7c145d5a.png);
+    background-image: url(../image/77f26cb588ae83a88de1910eb11abe7a7c145d5a.webp);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -12588,18 +12598,18 @@ body {
 
   .faq-mobile-item .faq-answer-drawer {
     width: 100% !important;
-    max-height: 0 !important;
+    max-height: 0;
     opacity: 0 !important;
     overflow: hidden !important;
     margin-top: 0 !important;
     pointer-events: none !important;
-    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin-top 0.35s ease !important;
+    transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin-top 0.25s ease !important;
+    will-change: max-height, opacity !important;
   }
 
   .faq-mobile-item.active .faq-answer-drawer {
-    max-height: 500px !important;
     opacity: 1 !important;
-    margin-top: 18px !important;
+    margin-top: 16px !important;
     pointer-events: auto !important;
   }
 

@@ -6,49 +6,63 @@
   font-family: 'Decima Mono X-Regular';
   font-style: normal;
   font-weight: 400;
-  src: url(../font/DecimaMonoX.ttf) format('truetype');
+  src: url(../font/DecimaMonoX.woff2) format('woff2'),
+       url(../font/DecimaMonoX.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'Decima Mono X-Bold';
   font-style: normal;
   font-weight: 700;
-  src: url(../font/DecimaMonoX-Bold.ttf) format('truetype');
+  src: url(../font/DecimaMonoX-Bold.woff2) format('woff2'),
+       url(../font/DecimaMonoX-Bold.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Regular';
   font-style: normal;
   font-weight: 400;
-  src: url(../font/SFPro-Regular.ttf) format('truetype');
+  src: url(../font/SFPro-Regular.woff2) format('woff2'),
+       url(../font/SFPro-Regular.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Condensed Medium';
   font-style: normal;
   font-weight: 500;
-  src: url(../font/SFPro-CondensedMedium.ttf) format('truetype');
+  src: url(../font/SFPro-CondensedMedium.woff2) format('woff2'),
+       url(../font/SFPro-CondensedMedium.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Condensed Semibold';
   font-style: normal;
   font-weight: 600;
-  src: url(../font/SFPro-CondensedSemibold.ttf) format('truetype');
+  src: url(../font/SFPro-CondensedSemibold.woff2) format('woff2'),
+       url(../font/SFPro-CondensedSemibold.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Condensed Bold';
   font-style: normal;
   font-weight: 700;
-  src: url(../font/SFPro-CondensedBold.ttf) format('truetype');
+  src: url(../font/SFPro-CondensedBold.woff2) format('woff2'),
+       url(../font/SFPro-CondensedBold.ttf) format('truetype');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'SF Pro-Compressed Bold';
   font-style: normal;
   font-weight: 700;
-  src: url(../font/SFPro-CompressedBold.ttf) format('truetype');
+  src: url(../font/SFPro-CompressedBold.woff2) format('woff2'),
+       url(../font/SFPro-CompressedBold.ttf) format('truetype');
+  font-display: swap;
 }
 
 *,

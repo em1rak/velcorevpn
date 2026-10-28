@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Send to Telegram Bot Server (async, doesn't block UI if bot is offline)
         try {
-          const botServerUrl = window.VELCORE_BOT_API || 'http://localhost:3001/api/lead';
+          const botServerUrl = window.VELCORE_BOT_API || 'https://velcore-telegram-bot.onrender.com/api/lead';
           fetch(botServerUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

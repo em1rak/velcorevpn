@@ -792,7 +792,7 @@ document.addEventListener('DOMContentLoaded', function () {
         el.style.cursor = 'pointer';
         el.addEventListener('click', function (e) {
           e.stopPropagation();
-          window.open('https://t.me/', '_blank');
+          window.open('https://t.me/neverovmatvey', '_blank');
         });
       }
     });

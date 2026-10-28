@@ -4543,7 +4543,7 @@ body {
     font-weight: 540;
     font-feature-settings: "locl" 0;
     width: 1111px;
-    white-space: pre;
+    white-space: normal;
   }
 
   .Pixso-text-5_405 {
@@ -6367,8 +6367,13 @@ body {
     transform: none !important;
   }
 
-  .Pixso-paragraph-5_404 {
-    white-space: pre-wrap !important;
+  .Pixso-paragraph-5_404,
+  .Pixso-text-5_405,
+  .Pixso-paragraph-5_405_0,
+  .faq-answer-box {
+    white-space: normal !important;
+    text-align: left !important;
+    text-indent: 0 !important;
     width: 100% !important;
     max-width: 1111px !important;
   }
@@ -12613,6 +12618,17 @@ body {
     opacity: 1 !important;
     margin-top: 18px !important;
     pointer-events: auto !important;
+  }
+
+  .faq-mobile-item .faq-answer-box,
+  .faq-mobile-item .Pixso-paragraph-5_710,
+  .faq-mobile-item .Pixso-text-5_711,
+  .faq-mobile-item .Pixso-paragraph-5_711_0,
+  .faq-mobile-item .Pixso-paragraph-5_711_1 {
+    white-space: normal !important;
+    text-align: left !important;
+    text-indent: 0 !important;
+    width: 100% !important;
   }
 
   .Pixso-frame-5_706 .Pixso-vector-5_708,

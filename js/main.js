@@ -1,8 +1,59 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Utility: Smooth Scroll to target element
+  let isProgrammaticScroll = false;
+  let programmaticScrollTimeout = null;
+  let unfoldTariffsFn = null;
+  let foldTariffsFn = null;
+
+  function endProgrammaticScroll() {
+    isProgrammaticScroll = false;
+    window.removeEventListener('scrollend', endProgrammaticScroll);
+    if (programmaticScrollTimeout) {
+      clearTimeout(programmaticScrollTimeout);
+      programmaticScrollTimeout = null;
+    }
+  }
+
+  // Utility: Smooth Scroll to target element with tariff section coordination
   function smoothScrollTo(element) {
     if (!element) return;
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    isProgrammaticScroll = true;
+    if (programmaticScrollTimeout) clearTimeout(programmaticScrollTimeout);
+
+    const dSection = document.getElementById('5_841');
+    const mSection = document.getElementById('5_859');
+    const windowWidth = document.documentElement.clientWidth || window.innerWidth;
+    const isMobile = windowWidth <= 768;
+    const tariffSection = isMobile ? mSection : dSection;
+
+    const elRect = element.getBoundingClientRect();
+    const elTop = elRect.top + window.scrollY;
+
+    if (tariffSection) {
+      const isTargetSection = (element === tariffSection || element.id === '5_841' || element.id === '5_859');
+      if (!isTargetSection) {
+        const secRect = tariffSection.getBoundingClientRect();
+        const secTop = secRect.top + window.scrollY;
+
+        // If target is strictly below the tariffs block (Lead Form, FAQ, Contacts)
+        if (elTop > secTop + 100) {
+          if (unfoldTariffsFn) unfoldTariffsFn();
+        } else if (elTop < secTop - 200) {
+          // If scrolling back up to top sections (Hero, Calculator)
+          if (foldTariffsFn) foldTariffsFn();
+        }
+      }
+    }
+
+    const navOffset = isMobile ? 60 : 70;
+    const targetY = Math.max(0, elTop - navOffset);
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+
+    if ('onscrollend' in window) {
+      window.addEventListener('scrollend', endProgrammaticScroll, { once: true });
+    }
+
+    programmaticScrollTimeout = setTimeout(endProgrammaticScroll, 1800);
   }
 
   // Utility: Format numbers with spaces (e.g. 1 495 900)
@@ -208,15 +259,16 @@ document.addEventListener('DOMContentLoaded', function () {
       platform: 'desktop'
     });
 
-    const dHeroPresBtn = document.getElementById('5_211');
-    if (dHeroPresBtn) {
-      dHeroPresBtn.classList.add('clickable-btn');
-      dHeroPresBtn.addEventListener('click', function () {
+    const dHeroPresBtns = [document.getElementById('5_211'), document.getElementById('5_212'), ...document.querySelectorAll('.btn-hero-pres')].filter(Boolean);
+    dHeroPresBtns.forEach(btn => {
+      btn.classList.add('clickable-btn');
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
         const target = document.getElementById('5_794') || deskForm.fioContainer;
         smoothScrollTo(target);
         if (deskForm.fioInput) setTimeout(() => deskForm.fioInput.focus(), 600);
       });
-    }
+    });
 
     // Mobile form
     const mobForm = setupFormInstance({
@@ -231,15 +283,16 @@ document.addEventListener('DOMContentLoaded', function () {
       platform: 'mobile'
     });
 
-    const mHeroPresBtn = document.getElementById('5_542');
-    if (mHeroPresBtn) {
-      mHeroPresBtn.classList.add('clickable-btn');
-      mHeroPresBtn.addEventListener('click', function () {
+    const mHeroPresBtns = [document.getElementById('5_542'), document.getElementById('5_538'), ...document.querySelectorAll('#mobile-view .btn-hero-pres')].filter(Boolean);
+    mHeroPresBtns.forEach(btn => {
+      btn.classList.add('clickable-btn');
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
         const target = document.getElementById('5_755') || mobForm.fioContainer;
         smoothScrollTo(target);
         if (mobForm.fioInput) setTimeout(() => mobForm.fioInput.focus(), 600);
       });
-    }
+    });
   }
 
   // ==========================================
@@ -381,13 +434,14 @@ document.addEventListener('DOMContentLoaded', function () {
       updateDCalc();
     }
 
-    const dWantCheckBtn = document.getElementById('5_218') || document.getElementById('5_219');
-    if (dWantCheckBtn) {
-      dWantCheckBtn.classList.add('clickable-btn');
-      dWantCheckBtn.addEventListener('click', function () {
+    const dWantCheckBtns = [document.getElementById('5_218'), document.getElementById('5_219'), ...document.querySelectorAll('.btn-calc-submit')].filter(Boolean);
+    dWantCheckBtns.forEach(btn => {
+      btn.classList.add('clickable-btn');
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
         smoothScrollTo(document.getElementById('5_794'));
       });
-    }
+    });
 
     // Mobile Calculator
     let mSubscribers = 77650;
@@ -456,13 +510,20 @@ document.addEventListener('DOMContentLoaded', function () {
       updateMCalc();
     }
 
-    const mWantCheckBtn = document.getElementById('5_550') || document.getElementById('5_551');
-    if (mWantCheckBtn) {
-      mWantCheckBtn.classList.add('clickable-btn');
-      mWantCheckBtn.addEventListener('click', function () {
+    const mWantCheckBtns = [
+      document.getElementById('5_550'),
+      document.getElementById('5_551'),
+      document.getElementById('5_458'),
+      document.getElementById('5_459'),
+      ...document.querySelectorAll('#mobile-view .btn-calc-submit')
+    ].filter(Boolean);
+    mWantCheckBtns.forEach(btn => {
+      btn.classList.add('clickable-btn');
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
         smoothScrollTo(document.getElementById('5_755'));
       });
-    }
+    });
   }
 
   // ==========================================
@@ -536,11 +597,17 @@ document.addEventListener('DOMContentLoaded', function () {
         el.classList.add('interactive-nav');
         el.addEventListener('click', () => {
           if (item.target === '5_841') {
+            isProgrammaticScroll = true;
+            if (programmaticScrollTimeout) clearTimeout(programmaticScrollTimeout);
             const windowWidth = document.documentElement.clientWidth || window.innerWidth;
             const scale = windowWidth < 1920 ? (windowWidth / 1920) : 1;
             const triggerTop = -68 * scale;
             const rect = targetEl.getBoundingClientRect();
             window.scrollTo({ top: window.scrollY + rect.top - triggerTop, behavior: 'smooth' });
+            if ('onscrollend' in window) {
+              window.addEventListener('scrollend', endProgrammaticScroll, { once: true });
+            }
+            programmaticScrollTimeout = setTimeout(endProgrammaticScroll, 1500);
           } else {
             smoothScrollTo(targetEl);
           }
@@ -571,7 +638,23 @@ document.addEventListener('DOMContentLoaded', function () {
       const targetEl = document.getElementById(item.target);
       if (el && targetEl) {
         el.classList.add('interactive-nav');
-        el.addEventListener('click', () => smoothScrollTo(targetEl));
+        el.addEventListener('click', () => {
+          if (item.target === '5_859') {
+            isProgrammaticScroll = true;
+            if (programmaticScrollTimeout) clearTimeout(programmaticScrollTimeout);
+            const windowWidth = document.documentElement.clientWidth || window.innerWidth;
+            const scale = windowWidth / 440;
+            const triggerTop = 35 * scale;
+            const rect = targetEl.getBoundingClientRect();
+            window.scrollTo({ top: window.scrollY + rect.top - triggerTop, behavior: 'smooth' });
+            if ('onscrollend' in window) {
+              window.addEventListener('scrollend', endProgrammaticScroll, { once: true });
+            }
+            programmaticScrollTimeout = setTimeout(endProgrammaticScroll, 1500);
+          } else {
+            smoothScrollTo(targetEl);
+          }
+        });
       }
     });
 
@@ -798,13 +881,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Top Presentation Buttons -> Scroll to lead form
-    ['5_127', '5_454'].forEach(id => {
+    ['5_127', '5_128', '5_454', '5_455'].forEach(id => {
       const btn = document.getElementById(id);
       if (btn) {
         btn.classList.add('clickable-btn');
         btn.addEventListener('click', function (e) {
+          e.preventDefault();
           e.stopPropagation();
-          const formTarget = document.getElementById(id === '5_127' ? '5_794' : '5_755');
+          const formTarget = document.getElementById((id === '5_127' || id === '5_128') ? '5_794' : '5_755');
           if (formTarget) smoothScrollTo(formTarget);
         });
       }
@@ -960,6 +1044,31 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
+    unfoldTariffsFn = function () {
+      targetProgress = 1.0;
+      currentProgress = 1.0;
+      if (rAFId) {
+        cancelAnimationFrame(rAFId);
+        rAFId = null;
+      }
+      const { isMobile } = getActiveState();
+      renderCards(1.0, isMobile);
+    };
+
+    foldTariffsFn = function () {
+      targetProgress = 0.0;
+      currentProgress = 0.0;
+      if (rAFId) {
+        cancelAnimationFrame(rAFId);
+        rAFId = null;
+      }
+      const { isMobile } = getActiveState();
+      renderCards(0.0, isMobile);
+    };
+
+    window.__unfoldTariffs = unfoldTariffsFn;
+    window.__foldTariffs = foldTariffsFn;
+
     function getActiveState() {
       const windowWidth = document.documentElement.clientWidth || window.innerWidth;
       const isMobile = windowWidth <= 768;
@@ -978,6 +1087,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- WHEEL HANDLER (SCREEN LOCKED IN PLACE WHILE UNROLLING) ---
     window.addEventListener('wheel', function (e) {
+      if (isProgrammaticScroll) return;
       const { isMobile, section, triggerTop } = getActiveState();
       if (!section) return;
 
@@ -1017,6 +1127,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { passive: true });
 
     window.addEventListener('touchmove', function (e) {
+      if (isProgrammaticScroll) return;
       if (touchStartY === null || !e.touches || e.touches.length === 0) return;
       const currentY = e.touches[0].clientY;
       const deltaY = touchStartY - currentY; // positive = swipe up / scroll down
@@ -1053,6 +1164,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- KEYBOARD NAVIGATION (Arrows / PageDown) ---
     window.addEventListener('keydown', function (e) {
+      if (isProgrammaticScroll) return;
       const { isMobile, section, triggerTop } = getActiveState();
       if (!section) return;
 
@@ -1076,7 +1188,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- SCROLL LOCK ENFORCER (Keeps screen fixed at section until cards unfold) ---
     let isLockingScroll = false;
     window.addEventListener('scroll', function () {
-      if (isLockingScroll) return;
+      if (isLockingScroll || isProgrammaticScroll) return;
       const { isMobile, section, triggerTop } = getActiveState();
       if (!section) return;
 
@@ -1117,12 +1229,12 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('orientationchange', fitFrames);
 
   initCookies();
+  initTariffScrollAnimation();
   initForms();
   initCalculators();
   initFAQ();
   initNav();
   initNavbarToggle();
-  initTariffScrollAnimation();
 });
 
 

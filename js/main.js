@@ -575,17 +575,17 @@ document.addEventListener('DOMContentLoaded', function () {
   function initNav() {
     // Desktop links
     const dNavMap = [
-      { id: '5_59', target: '5_799' },
+      { id: '5_59', target: '5_836' },
       { id: '5_60', target: '5_789' },
       { id: '5_61', target: '5_841' },
       { id: '5_62', target: '5_844' },
-      { id: '5_63', target: '5_802' },
+      { id: '5_63', target: '5_837' },
       { id: '5_64', target: '5_794' },
-      { id: '5_116', target: '5_799' },
+      { id: '5_116', target: '5_836' },
       { id: '5_117', target: '5_789' },
       { id: '5_118', target: '5_841' },
       { id: '5_119', target: '5_844' },
-      { id: '5_120', target: '5_802' },
+      { id: '5_120', target: '5_837' },
       { id: '5_121', target: '5_794' },
       { id: '5_53', target: '5_789' },
     ];
@@ -625,11 +625,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Mobile links
     const mNavMap = [
-      { id: '5_760', target: '5_504' },
+      { id: '5_760', target: '5_855' },
       { id: '5_761', target: '5_586' },
       { id: '5_762', target: '5_859' },
       { id: '5_763', target: '5_860' },
-      { id: '5_764', target: '4_221' },
+      { id: '5_764', target: '5_856' },
       { id: '5_765', target: '5_755' },
     ];
 

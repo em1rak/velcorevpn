@@ -475,18 +475,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const items = container.querySelectorAll(itemSelector);
 
-      // Initialize initial open state
-      items.forEach(item => {
-        const drawer = item.querySelector('.faq-answer-drawer');
-        if (drawer) {
-          if (item.classList.contains('active')) {
-            drawer.style.maxHeight = drawer.scrollHeight + 'px';
-          } else {
-            drawer.style.maxHeight = '0px';
-          }
-        }
-      });
-
       items.forEach(item => {
         const header = headerSelector ? (item.querySelector(headerSelector) || item) : item;
         header.style.cursor = 'pointer';
@@ -495,28 +483,19 @@ document.addEventListener('DOMContentLoaded', function () {
           if (e.target.closest('.faq-answer-drawer')) return;
 
           const isCurrentlyActive = item.classList.contains('active');
-          const currentDrawer = item.querySelector('.faq-answer-drawer');
 
-          // Close all other items in this accordion smoothly
+          // Close all other items in this accordion
           items.forEach(otherItem => {
-            if (otherItem !== item && otherItem.classList.contains('active')) {
+            if (otherItem !== item) {
               otherItem.classList.remove('active');
-              const d = otherItem.querySelector('.faq-answer-drawer');
-              if (d) d.style.maxHeight = '0px';
             }
           });
 
           // Toggle clicked item
           if (!isCurrentlyActive) {
             item.classList.add('active');
-            if (currentDrawer) {
-              currentDrawer.style.maxHeight = currentDrawer.scrollHeight + 'px';
-            }
           } else {
             item.classList.remove('active');
-            if (currentDrawer) {
-              currentDrawer.style.maxHeight = '0px';
-            }
           }
         });
       });

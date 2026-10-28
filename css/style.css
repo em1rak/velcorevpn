@@ -6322,18 +6322,19 @@ body {
 
   .faq-desktop-item .faq-answer-drawer {
     width: 100% !important;
-    max-height: 0;
+    max-height: 0 !important;
     opacity: 0 !important;
     overflow: hidden !important;
     margin-top: 0 !important;
     pointer-events: none !important;
-    transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin-top 0.25s ease !important;
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin-top 0.3s ease !important;
     will-change: max-height, opacity !important;
   }
 
   .faq-desktop-item.active .faq-answer-drawer {
+    max-height: 250px !important;
     opacity: 1 !important;
-    margin-top: 24px !important;
+    margin-top: 28px !important;
     pointer-events: auto !important;
   }
 
@@ -12598,18 +12599,19 @@ body {
 
   .faq-mobile-item .faq-answer-drawer {
     width: 100% !important;
-    max-height: 0;
+    max-height: 0 !important;
     opacity: 0 !important;
     overflow: hidden !important;
     margin-top: 0 !important;
     pointer-events: none !important;
-    transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin-top 0.25s ease !important;
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin-top 0.3s ease !important;
     will-change: max-height, opacity !important;
   }
 
   .faq-mobile-item.active .faq-answer-drawer {
+    max-height: 180px !important;
     opacity: 1 !important;
-    margin-top: 16px !important;
+    margin-top: 18px !important;
     pointer-events: auto !important;
   }
 

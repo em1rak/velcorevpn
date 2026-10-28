@@ -12860,3 +12860,60 @@ body {
 .footer-policy-link:active {
   transform: scale(0.97);
 }
+
+/* ========================================================================= */
+/* TARIFF CARDS SCROLL-DRIVEN STACK UNROLL ANIMATION                         */
+/* ========================================================================= */
+.tariff-card-anim {
+  will-change: transform, filter, opacity;
+  transform-origin: center top;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: transform 0.22s cubic-bezier(0.25, 1, 0.5, 1), filter 0.15s ease-out, opacity 0.15s ease-out;
+}
+
+/* Desktop cards z-index hierarchy and tactile card shadows */
+.Pixso-paragraph-4_213,
+.Pixso-text-4_214,
+.Pixso-text-4_215,
+.Pixso-text-4_216 {
+  z-index: 40 !important;
+}
+
+.Pixso-frame-4_117 {
+  z-index: 30;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+}
+
+.Pixso-frame-4_181 {
+  z-index: 20;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+}
+
+.Pixso-frame-4_149 {
+  z-index: 10;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+}
+
+/* Mobile cards z-index hierarchy and tactile card shadows */
+.Pixso-paragraph-4_334,
+.Pixso-text-4_333,
+.Pixso-text-4_331,
+.Pixso-text-4_332 {
+  z-index: 40 !important;
+}
+
+.Pixso-frame-4_295 {
+  z-index: 30;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.Pixso-frame-4_259 {
+  z-index: 20;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.Pixso-frame-4_223 {
+  z-index: 10;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}

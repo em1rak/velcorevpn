@@ -811,6 +811,285 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // ==========================================
+  // 7. TARIFF CARDS SCROLL-DRIVEN STACK UNROLL ANIMATION
+  // ==========================================
+  function initTariffScrollAnimation() {
+    const dSection = document.getElementById('5_841');
+    const dCombo = document.getElementById('4_117');
+    const dDouble = document.getElementById('4_181');
+    const dStandard = document.getElementById('4_149');
+
+    const mSection = document.getElementById('5_859');
+    const mCombo = document.getElementById('4_295');
+    const mDouble = document.getElementById('4_259');
+    const mStandard = document.getElementById('4_223');
+
+    if (!dSection && !mSection) return;
+
+    [dCombo, dDouble, dStandard, mCombo, mDouble, mStandard].forEach(el => {
+      if (el) el.classList.add('tariff-card-anim');
+    });
+
+    let animProgress = 0; // 0.0 = fully stacked, 1.0 = fully unfolded
+    let isLocked = false;
+    let lockScrollY = null;
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function renderCards(progress, isMobile) {
+      const combo = isMobile ? mCombo : dCombo;
+      const double = isMobile ? mDouble : dDouble;
+      const standard = isMobile ? mStandard : dStandard;
+
+      if (!combo || !double || !standard) return;
+
+      // Base travel offsets in canvas coordinates:
+      // Slot 1 (Standard): Desktop 278px | Mobile 160px
+      // Slot 2 (Double):   Desktop 971px | Mobile 518px
+      // Slot 3 (Combo):    Desktop 1664px| Mobile 876px
+      const comboTravel = isMobile ? -716 : -1386;
+      const doubleTravel = isMobile ? -358 : -693;
+      const stackShiftDouble = isMobile ? -14 : -24;
+      const stackShiftStandard = isMobile ? -28 : -48;
+
+      // --- PHASE 1: 0.0 -> 0.48 (КОМБО peels down, ДАБЛ ЧИЗ unblurs IMMEDIATELY) ---
+      // Instantaneous unblur for ДАБЛ ЧИЗ in first 0.05 of progress (1st scroll tick)
+      const unblur1 = Math.max(0, Math.min(1, progress / 0.05));
+      const t1 = Math.max(0, Math.min(1, progress / 0.46));
+      const e1 = easeInOutCubic(t1);
+
+      // Card 3: КОМБО (front of stack -> peels down to Slot 3)
+      const comboY = comboTravel * (1 - e1);
+      const comboScale = 1.0;
+      const comboBlur = 0;
+      const comboOpacity = 1.0;
+
+      // Card 2: ДАБЛ ЧИЗ (middle card -> unblurs instantly on 1st tick, stays sharp, then peels down)
+      let doubleY, doubleScale, doubleBlur, doubleOpacity;
+      if (progress < 0.50) {
+        doubleY = (doubleTravel + stackShiftDouble) + (-stackShiftDouble * e1);
+        doubleBlur = 4 * (1 - unblur1);
+        doubleScale = 0.96 + 0.04 * unblur1;
+        doubleOpacity = 0.85 + 0.15 * unblur1;
+      } else {
+        // Phase 2: Card 2 slides down to Slot 2
+        const t2 = Math.max(0, Math.min(1, (progress - 0.52) / 0.44));
+        const e2 = easeInOutCubic(t2);
+        doubleY = doubleTravel * (1 - e2);
+        doubleScale = 1.0;
+        doubleBlur = 0;
+        doubleOpacity = 1.0;
+      }
+
+      // Card 1: СТАНДАРТ (back of stack -> unblurs instantly on 1st tick of Phase 2)
+      let standardY, standardScale, standardBlur, standardOpacity;
+      if (progress < 0.50) {
+        standardY = stackShiftStandard + (-stackShiftDouble * e1);
+        standardScale = 0.92 + 0.04 * e1;
+        standardBlur = 8 - 4 * e1;
+        standardOpacity = 0.70 + 0.15 * e1;
+      } else {
+        // Instantaneous unblur for СТАНДАРТ right as Phase 2 begins (0.50 -> 0.55)
+        const unblur2 = Math.max(0, Math.min(1, (progress - 0.50) / 0.05));
+        const t2 = Math.max(0, Math.min(1, (progress - 0.52) / 0.44));
+        const e2 = easeInOutCubic(t2);
+
+        standardY = stackShiftDouble * (1 - e2);
+        standardBlur = 4 * (1 - unblur2);
+        standardScale = 0.96 + 0.04 * unblur2;
+        standardOpacity = 0.85 + 0.15 * unblur2;
+      }
+
+      // If fully unfolded, lock cleanly into place
+      if (progress >= 0.999) {
+        combo.style.transform = 'translate3d(0, 0px, 0) scale(1)';
+        combo.style.filter = 'none';
+        combo.style.opacity = '1';
+        combo.style.zIndex = '30';
+
+        double.style.transform = 'translate3d(0, 0px, 0) scale(1)';
+        double.style.filter = 'none';
+        double.style.opacity = '1';
+        double.style.zIndex = '20';
+
+        standard.style.transform = 'translate3d(0, 0px, 0) scale(1)';
+        standard.style.filter = 'none';
+        standard.style.opacity = '1';
+        standard.style.zIndex = '10';
+        return;
+      }
+
+      combo.style.transform = `translate3d(0, ${comboY.toFixed(2)}px, 0) scale(${comboScale.toFixed(4)})`;
+      combo.style.filter = comboBlur > 0.05 ? `blur(${comboBlur.toFixed(2)}px)` : 'none';
+      combo.style.opacity = comboOpacity.toFixed(3);
+      combo.style.zIndex = '30';
+
+      double.style.transform = `translate3d(0, ${doubleY.toFixed(2)}px, 0) scale(${doubleScale.toFixed(4)})`;
+      double.style.filter = doubleBlur > 0.05 ? `blur(${doubleBlur.toFixed(2)}px)` : 'none';
+      double.style.opacity = doubleOpacity.toFixed(3);
+      double.style.zIndex = '20';
+
+      standard.style.transform = `translate3d(0, ${standardY.toFixed(2)}px, 0) scale(${standardScale.toFixed(4)})`;
+      standard.style.filter = standardBlur > 0.05 ? `blur(${standardBlur.toFixed(2)}px)` : 'none';
+      standard.style.opacity = standardOpacity.toFixed(3);
+      standard.style.zIndex = '10';
+    }
+
+    function getActiveState() {
+      const windowWidth = document.documentElement.clientWidth || window.innerWidth;
+      const isMobile = windowWidth <= 768;
+      const section = isMobile ? mSection : dSection;
+      let scale = 1;
+      if (isMobile) {
+        scale = windowWidth / 440;
+      } else {
+        scale = windowWidth < 1920 ? (windowWidth / 1920) : 1;
+      }
+      const triggerTop = isMobile ? (35 * scale) : (60 * scale);
+      return { isMobile, section, scale, triggerTop };
+    }
+
+    // --- WHEEL HANDLER (SCREEN LOCKED IN PLACE WHILE UNROLLING) ---
+    window.addEventListener('wheel', function (e) {
+      const { isMobile, section, triggerTop } = getActiveState();
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      // Section has reached trigger position and is on screen
+      const isAtSection = (rect.top <= triggerTop + 15) && (rect.bottom >= triggerTop);
+
+      if (isAtSection) {
+        // Scrolling DOWN while cards are not fully unfolded: lock screen & advance progress
+        if (e.deltaY > 0 && animProgress < 1.0) {
+          e.preventDefault();
+          const step = Math.min(0.18, Math.max(0.05, Math.abs(e.deltaY) * 0.0018));
+          animProgress = Math.min(1.0, animProgress + step);
+          renderCards(animProgress, isMobile);
+          return;
+        }
+        // Scrolling UP while cards are unfolded: lock screen & fold back up
+        if (e.deltaY < 0 && animProgress > 0.0 && rect.top >= triggerTop - 20) {
+          e.preventDefault();
+          const step = Math.min(0.18, Math.max(0.05, Math.abs(e.deltaY) * 0.0018));
+          animProgress = Math.max(0.0, animProgress - step);
+          renderCards(animProgress, isMobile);
+          return;
+        }
+      }
+    }, { passive: false });
+
+    // --- TOUCH HANDLER FOR MOBILE (SCREEN LOCKED IN PLACE WHILE UNROLLING) ---
+    let touchStartY = null;
+
+    window.addEventListener('touchstart', function (e) {
+      if (e.touches && e.touches.length > 0) {
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', function (e) {
+      if (touchStartY === null || !e.touches || e.touches.length === 0) return;
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartY - currentY; // positive = swipe up / scroll down
+
+      const { isMobile, section, triggerTop } = getActiveState();
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      const isAtSection = (rect.top <= triggerTop + 20) && (rect.bottom >= triggerTop);
+
+      if (isAtSection) {
+        // Swipe UP (scroll DOWN)
+        if (deltaY > 0 && animProgress < 1.0) {
+          if (e.cancelable) e.preventDefault();
+          const step = Math.min(0.16, Math.max(0.03, Math.abs(deltaY) * 0.004));
+          animProgress = Math.min(1.0, animProgress + step);
+          touchStartY = currentY;
+          renderCards(animProgress, isMobile);
+          return;
+        }
+        // Swipe DOWN (scroll UP)
+        if (deltaY < 0 && animProgress > 0.0 && rect.top >= triggerTop - 20) {
+          if (e.cancelable) e.preventDefault();
+          const step = Math.min(0.16, Math.max(0.03, Math.abs(deltaY) * 0.004));
+          animProgress = Math.max(0.0, animProgress - step);
+          touchStartY = currentY;
+          renderCards(animProgress, isMobile);
+          return;
+        }
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchend', function () {
+      touchStartY = null;
+    }, { passive: true });
+
+    // --- KEYBOARD NAVIGATION (Arrows / PageDown) ---
+    window.addEventListener('keydown', function (e) {
+      const { isMobile, section, triggerTop } = getActiveState();
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      const isAtSection = (rect.top <= triggerTop + 15) && (rect.bottom >= triggerTop);
+
+      if (isAtSection) {
+        if (['ArrowDown', 'PageDown', ' '].includes(e.key) && animProgress < 1.0) {
+          e.preventDefault();
+          animProgress = Math.min(1.0, animProgress + 0.15);
+          renderCards(animProgress, isMobile);
+          return;
+        }
+        if (['ArrowUp', 'PageUp'].includes(e.key) && animProgress > 0.0 && rect.top >= triggerTop - 20) {
+          e.preventDefault();
+          animProgress = Math.max(0.0, animProgress - 0.15);
+          renderCards(animProgress, isMobile);
+          return;
+        }
+      }
+    });
+
+    // --- SCROLL LOCK ENFORCER (Keeps screen fixed at section until cards unfold) ---
+    let isLockingScroll = false;
+    window.addEventListener('scroll', function () {
+      if (isLockingScroll) return;
+      const { isMobile, section, triggerTop } = getActiveState();
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+
+      // If scrolling down into section and cards are NOT yet fully unfolded:
+      // Lock window scroll right at triggerTop so the screen stays in place!
+      if (rect.top < triggerTop && animProgress < 0.99) {
+        isLockingScroll = true;
+        const targetScroll = window.scrollY + (rect.top - triggerTop);
+        window.scrollTo({ top: targetScroll, behavior: 'instant' });
+        setTimeout(() => { isLockingScroll = false; }, 10);
+      }
+    }, { passive: true });
+
+    // Handle resize
+    window.addEventListener('resize', function () {
+      const { isMobile } = getActiveState();
+      const inactiveCards = isMobile ? [dCombo, dDouble, dStandard] : [mCombo, mDouble, mStandard];
+      inactiveCards.forEach(c => {
+        if (c) {
+          c.style.transform = '';
+          c.style.filter = '';
+          c.style.opacity = '';
+        }
+      });
+      renderCards(animProgress, isMobile);
+    }, { passive: true });
+
+    // Initial render
+    const { isMobile } = getActiveState();
+    renderCards(0, isMobile);
+  }
+
+
   // Initialize all features
   fitFrames();
   window.addEventListener('resize', fitFrames);
@@ -822,5 +1101,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initFAQ();
   initNav();
   initNavbarToggle();
+  initTariffScrollAnimation();
 });
+
 

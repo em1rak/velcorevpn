@@ -213,14 +213,30 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Both fields filled: Save lead data
-        const leads = JSON.parse(localStorage.getItem('velcore_leads') || '[]');
-        leads.push({
+        const leadData = {
           fio,
           contact,
           platform,
           date: new Date().toISOString()
-        });
+        };
+
+        const leads = JSON.parse(localStorage.getItem('velcore_leads') || '[]');
+        leads.push(leadData);
         localStorage.setItem('velcore_leads', JSON.stringify(leads));
+
+        // Send to Telegram Bot Server (async, doesn't block UI if bot is offline)
+        try {
+          const botServerUrl = window.VELCORE_BOT_API || 'http://localhost:3001/api/lead';
+          fetch(botServerUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(leadData)
+          }).catch((err) => {
+            console.warn('[Velcore Bot] Не удалось отправить заявку в Telegram бота:', err.message);
+          });
+        } catch (e) {
+          console.warn('[Velcore Bot] Ошибка запроса к боту:', e);
+        }
 
         // Replace input fields with confirmation text & hide submit button
         const successBox = document.createElement('div');

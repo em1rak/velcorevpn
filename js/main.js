@@ -534,7 +534,17 @@ document.addEventListener('DOMContentLoaded', function () {
       const targetEl = document.getElementById(item.target);
       if (el && targetEl) {
         el.classList.add('interactive-nav');
-        el.addEventListener('click', () => smoothScrollTo(targetEl));
+        el.addEventListener('click', () => {
+          if (item.target === '5_841') {
+            const windowWidth = document.documentElement.clientWidth || window.innerWidth;
+            const scale = windowWidth < 1920 ? (windowWidth / 1920) : 1;
+            const triggerTop = -68 * scale;
+            const rect = targetEl.getBoundingClientRect();
+            window.scrollTo({ top: window.scrollY + rect.top - triggerTop, behavior: 'smooth' });
+          } else {
+            smoothScrollTo(targetEl);
+          }
+        });
       }
     });
 
@@ -948,7 +958,9 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         scale = windowWidth < 1920 ? (windowWidth / 1920) : 1;
       }
-      const triggerTop = isMobile ? (35 * scale) : (60 * scale);
+      // On desktop: allow the screen to scroll down further before stopping so the entire
+      // card block (including button & bottom rounded border) is comfortably visible in the viewport
+      const triggerTop = isMobile ? (35 * scale) : (-68 * scale);
       return { isMobile, section, scale, triggerTop };
     }
 
@@ -965,6 +977,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Scrolling DOWN while cards are not fully unfolded: lock screen & advance progress
         if (e.deltaY > 0 && animProgress < 1.0) {
           e.preventDefault();
+          if (Math.abs(rect.top - triggerTop) > 2 && animProgress < 0.05) {
+            window.scrollTo({ top: window.scrollY + (rect.top - triggerTop), behavior: 'instant' });
+          }
           const step = Math.min(0.18, Math.max(0.05, Math.abs(e.deltaY) * 0.0018));
           animProgress = Math.min(1.0, animProgress + step);
           renderCards(animProgress, isMobile);

@@ -841,12 +841,14 @@ document.addEventListener('DOMContentLoaded', function () {
       if (el) el.classList.add('tariff-card-anim');
     });
 
-    let animProgress = 0; // 0.0 = fully stacked, 1.0 = fully unfolded
-    let isLocked = false;
-    let lockScrollY = null;
+    let currentProgress = 0; // smoothly interpolated progress (0.0 to 1.0)
+    let targetProgress = 0;  // raw user input progress target
+    let rAFId = null;
 
-    function easeInOutCubic(t) {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    // Silky-smooth Hermite curve (zero jerk, continuous 1st derivative)
+    function smoothStep(t) {
+      const c = Math.max(0, Math.min(1, t));
+      return c * c * (3 - 2 * c);
     }
 
     function renderCards(progress, isMobile) {
@@ -865,55 +867,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const stackShiftDouble = isMobile ? -14 : -24;
       const stackShiftStandard = isMobile ? -28 : -48;
 
-      // --- PHASE 1: 0.0 -> 0.48 (КОМБО peels down, ДАБЛ ЧИЗ unblurs IMMEDIATELY) ---
-      // Instantaneous unblur for ДАБЛ ЧИЗ in first 0.05 of progress (1st scroll tick)
-      const unblur1 = Math.max(0, Math.min(1, progress / 0.05));
-      const t1 = Math.max(0, Math.min(1, progress / 0.46));
-      const e1 = easeInOutCubic(t1);
-
-      // Card 3: КОМБО (front of stack -> peels down to Slot 3)
-      const comboY = comboTravel * (1 - e1);
-      const comboScale = 1.0;
-      const comboBlur = 0;
-      const comboOpacity = 1.0;
-
-      // Card 2: ДАБЛ ЧИЗ (middle card -> unblurs instantly on 1st tick, stays sharp, then peels down)
-      let doubleY, doubleScale, doubleBlur, doubleOpacity;
-      if (progress < 0.50) {
-        doubleY = (doubleTravel + stackShiftDouble) + (-stackShiftDouble * e1);
-        doubleBlur = 4 * (1 - unblur1);
-        doubleScale = 0.96 + 0.04 * unblur1;
-        doubleOpacity = 0.85 + 0.15 * unblur1;
-      } else {
-        // Phase 2: Card 2 slides down to Slot 2
-        const t2 = Math.max(0, Math.min(1, (progress - 0.52) / 0.44));
-        const e2 = easeInOutCubic(t2);
-        doubleY = doubleTravel * (1 - e2);
-        doubleScale = 1.0;
-        doubleBlur = 0;
-        doubleOpacity = 1.0;
-      }
-
-      // Card 1: СТАНДАРТ (back of stack -> unblurs instantly on 1st tick of Phase 2)
-      let standardY, standardScale, standardBlur, standardOpacity;
-      if (progress < 0.50) {
-        standardY = stackShiftStandard + (-stackShiftDouble * e1);
-        standardScale = 0.92 + 0.04 * e1;
-        standardBlur = 8 - 4 * e1;
-        standardOpacity = 0.70 + 0.15 * e1;
-      } else {
-        // Instantaneous unblur for СТАНДАРТ right as Phase 2 begins (0.50 -> 0.55)
-        const unblur2 = Math.max(0, Math.min(1, (progress - 0.50) / 0.05));
-        const t2 = Math.max(0, Math.min(1, (progress - 0.52) / 0.44));
-        const e2 = easeInOutCubic(t2);
-
-        standardY = stackShiftDouble * (1 - e2);
-        standardBlur = 4 * (1 - unblur2);
-        standardScale = 0.96 + 0.04 * unblur2;
-        standardOpacity = 0.85 + 0.15 * unblur2;
-      }
-
-      // If fully unfolded, lock cleanly into place
+      // When fully unfolded, lock cleanly into final static positions
       if (progress >= 0.999) {
         combo.style.transform = 'translate3d(0, 0px, 0) scale(1)';
         combo.style.filter = 'none';
@@ -932,6 +886,42 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
+      // --- CASCADING WATERFALL ACCORDION UNROLL ---
+      // 1. CARD 1: КОМБО (Front card)
+      // Begins moving down immediately from progress = 0.0 to 0.92
+      const t1 = Math.max(0, Math.min(1, progress / 0.92));
+      const e1 = smoothStep(t1);
+      const comboY = comboTravel * (1 - e1);
+      const comboScale = 1.0;
+      const comboBlur = 0;
+      const comboOpacity = 1.0;
+
+      // 2. CARD 2: ДАБЛ ЧИЗ (Middle card)
+      // Unblurs rapidly right as scrolling starts (progress: 0.0 -> 0.08)
+      const unblur2 = Math.max(0, Math.min(1, progress / 0.08));
+      const untuck2 = Math.max(0, Math.min(1, progress / 0.12));
+      const tuckOffset2 = stackShiftDouble * (1 - smoothStep(untuck2));
+
+      // Begins moving down when Card 1 has separated by ~50px (progress = 0.12 to 0.90)
+      const t2 = Math.max(0, Math.min(1, (progress - 0.12) / 0.78));
+      const e2 = smoothStep(t2);
+      const doubleY = (doubleTravel + tuckOffset2) * (1 - e2);
+
+      const doubleBlur = 4 * (1 - unblur2);
+      const doubleScale = 0.96 + 0.04 * unblur2;
+      const doubleOpacity = 0.85 + 0.15 * unblur2;
+
+      // 3. CARD 3: СТАНДАРТ (Bottom card, stays at Slot 1)
+      // Unblurs and untucks as Card 2 begins to separate (progress: 0.10 -> 0.28)
+      const unblur3 = Math.max(0, Math.min(1, (progress - 0.10) / 0.16));
+      const untuck3 = Math.max(0, Math.min(1, (progress - 0.10) / 0.22));
+      const standardY = stackShiftStandard * (1 - smoothStep(untuck3));
+
+      const standardBlur = 8 * (1 - unblur3);
+      const standardScale = 0.92 + 0.08 * untuck3;
+      const standardOpacity = 0.70 + 0.30 * untuck3;
+
+      // Apply transforms
       combo.style.transform = `translate3d(0, ${comboY.toFixed(2)}px, 0) scale(${comboScale.toFixed(4)})`;
       combo.style.filter = comboBlur > 0.05 ? `blur(${comboBlur.toFixed(2)}px)` : 'none';
       combo.style.opacity = comboOpacity.toFixed(3);
@@ -946,6 +936,28 @@ document.addEventListener('DOMContentLoaded', function () {
       standard.style.filter = standardBlur > 0.05 ? `blur(${standardBlur.toFixed(2)}px)` : 'none';
       standard.style.opacity = standardOpacity.toFixed(3);
       standard.style.zIndex = '10';
+    }
+
+    function renderLoop() {
+      const { isMobile } = getActiveState();
+      const diff = targetProgress - currentProgress;
+      if (Math.abs(diff) > 0.0003) {
+        // Damping factor: 0.12 provides luxurious, buttery-smooth inertial following
+        currentProgress += diff * 0.12;
+        renderCards(currentProgress, isMobile);
+        rAFId = requestAnimationFrame(renderLoop);
+      } else {
+        currentProgress = targetProgress;
+        renderCards(currentProgress, isMobile);
+        rAFId = null;
+      }
+    }
+
+    function setTargetProgress(newTarget) {
+      targetProgress = Math.max(0, Math.min(1.0, newTarget));
+      if (!rAFId) {
+        rAFId = requestAnimationFrame(renderLoop);
+      }
     }
 
     function getActiveState() {
@@ -975,22 +987,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (isAtSection) {
         // Scrolling DOWN while cards are not fully unfolded: lock screen & advance progress
-        if (e.deltaY > 0 && animProgress < 1.0) {
+        if (e.deltaY > 0 && targetProgress < 1.0) {
           e.preventDefault();
-          if (Math.abs(rect.top - triggerTop) > 2 && animProgress < 0.05) {
+          if (Math.abs(rect.top - triggerTop) > 2 && targetProgress < 0.05) {
             window.scrollTo({ top: window.scrollY + (rect.top - triggerTop), behavior: 'instant' });
           }
-          const step = Math.min(0.18, Math.max(0.05, Math.abs(e.deltaY) * 0.0018));
-          animProgress = Math.min(1.0, animProgress + step);
-          renderCards(animProgress, isMobile);
+          // Gentle, slower step size: ~15-18 notches to unfold
+          const step = Math.min(0.08, Math.max(0.02, Math.abs(e.deltaY) * 0.00065));
+          setTargetProgress(targetProgress + step);
           return;
         }
         // Scrolling UP while cards are unfolded: lock screen & fold back up
-        if (e.deltaY < 0 && animProgress > 0.0 && rect.top >= triggerTop - 20) {
+        if (e.deltaY < 0 && targetProgress > 0.0 && rect.top >= triggerTop - 20) {
           e.preventDefault();
-          const step = Math.min(0.18, Math.max(0.05, Math.abs(e.deltaY) * 0.0018));
-          animProgress = Math.max(0.0, animProgress - step);
-          renderCards(animProgress, isMobile);
+          const step = Math.min(0.08, Math.max(0.02, Math.abs(e.deltaY) * 0.00065));
+          setTargetProgress(targetProgress - step);
           return;
         }
       }
@@ -1009,6 +1020,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (touchStartY === null || !e.touches || e.touches.length === 0) return;
       const currentY = e.touches[0].clientY;
       const deltaY = touchStartY - currentY; // positive = swipe up / scroll down
+      touchStartY = currentY; // smooth continuous differential tracking
 
       const { isMobile, section, triggerTop } = getActiveState();
       if (!section) return;
@@ -1018,21 +1030,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (isAtSection) {
         // Swipe UP (scroll DOWN)
-        if (deltaY > 0 && animProgress < 1.0) {
+        if (deltaY > 0 && targetProgress < 1.0) {
           if (e.cancelable) e.preventDefault();
-          const step = Math.min(0.16, Math.max(0.03, Math.abs(deltaY) * 0.004));
-          animProgress = Math.min(1.0, animProgress + step);
-          touchStartY = currentY;
-          renderCards(animProgress, isMobile);
+          // Gentle touch step: smooth direct finger tracking (3-4 natural swipes to unfold)
+          const step = Math.min(0.06, Math.max(0.003, Math.abs(deltaY) * 0.0012));
+          setTargetProgress(targetProgress + step);
           return;
         }
         // Swipe DOWN (scroll UP)
-        if (deltaY < 0 && animProgress > 0.0 && rect.top >= triggerTop - 20) {
+        if (deltaY < 0 && targetProgress > 0.0 && rect.top >= triggerTop - 20) {
           if (e.cancelable) e.preventDefault();
-          const step = Math.min(0.16, Math.max(0.03, Math.abs(deltaY) * 0.004));
-          animProgress = Math.max(0.0, animProgress - step);
-          touchStartY = currentY;
-          renderCards(animProgress, isMobile);
+          const step = Math.min(0.06, Math.max(0.003, Math.abs(deltaY) * 0.0012));
+          setTargetProgress(targetProgress - step);
           return;
         }
       }
@@ -1051,16 +1060,14 @@ document.addEventListener('DOMContentLoaded', function () {
       const isAtSection = (rect.top <= triggerTop + 15) && (rect.bottom >= triggerTop);
 
       if (isAtSection) {
-        if (['ArrowDown', 'PageDown', ' '].includes(e.key) && animProgress < 1.0) {
+        if (['ArrowDown', 'PageDown', ' '].includes(e.key) && targetProgress < 1.0) {
           e.preventDefault();
-          animProgress = Math.min(1.0, animProgress + 0.15);
-          renderCards(animProgress, isMobile);
+          setTargetProgress(targetProgress + 0.10);
           return;
         }
-        if (['ArrowUp', 'PageUp'].includes(e.key) && animProgress > 0.0 && rect.top >= triggerTop - 20) {
+        if (['ArrowUp', 'PageUp'].includes(e.key) && targetProgress > 0.0 && rect.top >= triggerTop - 20) {
           e.preventDefault();
-          animProgress = Math.max(0.0, animProgress - 0.15);
-          renderCards(animProgress, isMobile);
+          setTargetProgress(targetProgress - 0.10);
           return;
         }
       }
@@ -1075,9 +1082,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const rect = section.getBoundingClientRect();
 
-      // If scrolling down into section and cards are NOT yet fully unfolded:
-      // Lock window scroll right at triggerTop so the screen stays in place!
-      if (rect.top < triggerTop && animProgress < 0.99) {
+      // Lock window scroll right at triggerTop until cards are fully unfolded
+      if (rect.top < triggerTop && targetProgress < 0.999 && rect.bottom > 0) {
         isLockingScroll = true;
         const targetScroll = window.scrollY + (rect.top - triggerTop);
         window.scrollTo({ top: targetScroll, behavior: 'instant' });
@@ -1096,7 +1102,7 @@ document.addEventListener('DOMContentLoaded', function () {
           c.style.opacity = '';
         }
       });
-      renderCards(animProgress, isMobile);
+      renderCards(currentProgress, isMobile);
     }, { passive: true });
 
     // Initial render

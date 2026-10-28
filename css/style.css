@@ -12869,7 +12869,7 @@ body {
   transform-origin: center top;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  transition: transform 0.22s cubic-bezier(0.25, 1, 0.5, 1), filter 0.15s ease-out, opacity 0.15s ease-out;
+  transition: none !important;
 }
 
 /* Desktop cards z-index hierarchy and tactile card shadows */
